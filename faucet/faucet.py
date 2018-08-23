@@ -35,13 +35,17 @@ def spam_account_create(count):
 def fill_accounts(accounts):
     for account in accounts:
         r = requests.post(settings.FAUCET_TRANSFER_URL, json={"destination": account.address})
+        if r.status_code == 200:
+            account.theoretical_balance = 20
+        else:
+            raise Warning('While filling account with money we got non 200 code')
     print('Filling done')
 
 
 def main(count):
-    print('Creating accounts')
+    print('Creating ' + str(count) + ' accounts.')
     accounts = spam_account_create(count)
-    print('Acquiring money')
+    print('Acquiring money.')
     fill_accounts(accounts)
     return accounts
 
