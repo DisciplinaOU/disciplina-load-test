@@ -24,7 +24,20 @@ def check_accounts_balance(accounts):
 
 def get_blocks():
     r = requests.get(settings.EXPLORER_BLOCKS, verify=False)  # SSLError occurs, so verify=False
+    if r.status_code == 200:
+        print('Successfully retrieved blocks')
+    else:
+        raise Warning('GET api/witness/v1/blocks returned non 200')
 
 
 def get_recent_transactions():
     r = requests.get(settings.EXPLORER_TRANSACTIONS, verify=False)  # SSLError occurs, so verify=False
+    if r.status_code == 200:
+        print('Successfully retrieved recent transactions')
+    else:
+        raise Warning('GET api/witness/v1/transactions returned non 200')
+
+
+def api_test():
+    get_blocks()
+    get_recent_transactions()

@@ -1,6 +1,6 @@
 import requests
 import json
-
+import os
 import settings
 
 
@@ -13,6 +13,9 @@ class Account:
 
     def get_address(self):
         return self.address
+
+    def to_string(self):
+        return '{ public:' + self.public + ', private:' + self.private + ', address:' + self.address + '}, \n'
 
 
 def create_account():
@@ -42,10 +45,21 @@ def fill_accounts(accounts):
     print('Filling done')
 
 
+def write_accounts_to_file(accounts):
+    if not os.path.exists('output'):
+        os.makedirs('output')
+    accounts_file = open('output/accounts.txt', "w+")
+    for account in accounts:
+        accounts_file.write(account.to_string())
+    accounts_file.close()
+
+
 def main(count):
     print('Creating ' + str(count) + ' accounts.')
     accounts = spam_account_create(count)
     print('Acquiring money.')
     fill_accounts(accounts)
+    print('Writing accounts data to output/accounts.txt')
+    write_accounts_to_file(accounts)
     return accounts
 

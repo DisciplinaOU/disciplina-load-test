@@ -5,7 +5,8 @@ from explorer import explorer
 def main():
     accounts = faucet.main(1)
     explorer.check_accounts_balance(accounts)
-
+    explorer.api_test()
+    
 
 if __name__ == '__main__':
     try:
