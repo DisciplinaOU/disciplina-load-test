@@ -35,6 +35,13 @@ def spam_account_create(count):
     return accounts
 
 
+def get_some_account_addresses(count):
+    addresses = []
+    for account in spam_account_create(count):
+        addresses.append(account.address)
+    return addresses
+
+
 def fill_accounts(accounts):
     for account in accounts:
         r = requests.post(settings.FAUCET_TRANSFER_URL, json={"destination": account.address})
