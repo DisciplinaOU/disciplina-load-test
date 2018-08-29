@@ -3,7 +3,7 @@ from explorer import explorer
 
 
 def main():
-    accounts = faucet.main(1)
+    accounts = faucet.main()
     explorer.check_accounts_balance(accounts)
     explorer.api_test()
     

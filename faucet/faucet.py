@@ -42,13 +42,17 @@ def get_some_account_addresses(count):
     return addresses
 
 
+def fill_account(account):
+    r = requests.post(settings.FAUCET_TRANSFER_URL, json={"destination": account.address})
+    if r.status_code == 200:
+        account.theoretical_balance = 20
+    else:
+        raise Warning('While filling account with money we got non 200 code')
+
+
 def fill_accounts(accounts):
     for account in accounts:
-        r = requests.post(settings.FAUCET_TRANSFER_URL, json={"destination": account.address})
-        if r.status_code == 200:
-            account.theoretical_balance = 20
-        else:
-            raise Warning('While filling account with money we got non 200 code')
+        fill_account(account)
     print('Filling done')
 
 
