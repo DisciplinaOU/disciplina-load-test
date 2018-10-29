@@ -1,5 +1,5 @@
 from locust import HttpLocust, TaskSet, task
-from single import faucet
+from scenarios import faucet
 from random import randint
 import settings
 import json

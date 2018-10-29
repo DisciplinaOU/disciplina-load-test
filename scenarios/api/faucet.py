@@ -28,7 +28,8 @@ def create_account():
 
 
 def fill_account(account):
-    r = requests.post(settings.FAUCET_BASE_URL + settings.FAUCET_TRANSFER_URL, json={"destination": account.address})
+    payload = {"destination": account.get_address()}
+    r = requests.post(settings.FAUCET_BASE_URL + settings.FAUCET_TRANSFER_URL, json=payload)
     if r.status_code == 200:
         account.theoretical_balance = 20
     else:

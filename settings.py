@@ -9,15 +9,15 @@ FAUCET_CREATE_WALLET_URL = '/api/faucet/v1/keygen'
 FAUCET_TRANSFER_URL = '/api/faucet/v1/transfer'
 
 # explorer test settings
-EXPLORER_ACCOUNT_INFO = '/api/witness/v1/accounts/'
-EXPLORER_BLOCKS = '/api/witness/v1/blocks/'
-EXPLORER_TRANSACTIONS = '/api/witness/v1/transactions/'
+EXPLORER_ACCOUNT_INFO = '/api/witness/v1/accounts'
+EXPLORER_BLOCKS = '/api/witness/v1/blocks'
+EXPLORER_TRANSACTIONS = '/api/witness/v1/transactions'
 
 # student test settings
-STUDENT_COURSES = '/api/student/v1/courses/'
-STUDENT_ASSIGNMENTS = '/api/student/v1/assignments/'
-STUDENT_SUBMISSIONS = '/api/student/v1/submissions/'
-STUDENT_PROOFS = '/api/student/v1/proofs/'
+STUDENT_COURSES = '/api/student/v1/courses'
+STUDENT_ASSIGNMENTS = '/api/student/v1/assignments'
+STUDENT_SUBMISSIONS = '/api/student/v1/submissions'
+STUDENT_PROOFS = '/api/student/v1/proofs'
 
 # educator test settings
 EDUCATOR_STUDENTS_LIST = '/api/educator/v1/students'

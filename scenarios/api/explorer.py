@@ -4,7 +4,7 @@ import settings
 
 
 def get_account_info(address):
-    r = requests.get(settings.EXPLORER_BASE_URL + settings.EXPLORER_ACCOUNT_INFO + address, verify=False)  # SSLError occurs, so verify=False
+    r = requests.get(settings.EXPLORER_BASE_URL + settings.EXPLORER_ACCOUNT_INFO + '/' + address, verify=False)  # SSLError occurs, so verify=False
     if r.status_code == 200:
         data = json.loads(r.text)
         return data
