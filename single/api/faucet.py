@@ -19,7 +19,7 @@ class Account:
 
 
 def create_account():
-    r = requests.post(settings.FAUCET_CREATE_WALLET_URL, json={})
+    r = requests.post(settings.FAUCET_BASE_URL + settings.FAUCET_CREATE_WALLET_URL, json={})
     if r.status_code == 200:
         data = json.loads(r.text)
         return Account(data['secretKey'], data['publicKey'], data['address'])
@@ -27,33 +27,12 @@ def create_account():
         raise Warning('While creating account we got non 200 code')
 
 
-def spam_account_create(count):
-    accounts = []
-    for i in range(0, count):
-        accounts.append(create_account())
-    print('Finished creating accounts.')
-    return accounts
-
-
-def get_some_account_addresses(count):
-    addresses = []
-    for account in spam_account_create(count):
-        addresses.append(account.address)
-    return addresses
-
-
 def fill_account(account):
-    r = requests.post(settings.FAUCET_TRANSFER_URL, json={"destination": account.address})
+    r = requests.post(settings.FAUCET_BASE_URL + settings.FAUCET_TRANSFER_URL, json={"destination": account.address})
     if r.status_code == 200:
         account.theoretical_balance = 20
     else:
         raise Warning('While filling account with money we got non 200 code')
-
-
-def fill_accounts(accounts):
-    for account in accounts:
-        fill_account(account)
-    print('Filling done')
 
 
 def write_accounts_to_file(accounts):
@@ -63,14 +42,3 @@ def write_accounts_to_file(accounts):
     for account in accounts:
         accounts_file.write(account.to_string())
     accounts_file.close()
-
-
-def main(count):
-    print('Creating ' + str(count) + ' accounts.')
-    accounts = spam_account_create(count)
-    print('Acquiring money.')
-    fill_accounts(accounts)
-    print('Writing accounts data to output/accounts.txt')
-    write_accounts_to_file(accounts)
-    return accounts
-

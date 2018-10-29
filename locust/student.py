@@ -1,14 +1,15 @@
 from locust import HttpLocust, TaskSet, task
 from random import randint
+import settings
 import json
 
 
 class UserBehavior(TaskSet):
     @task(1)
     def courses(self):
-        headers = {"Authorization": "Bearer %s" % 'eyJhbGciOiJFZERTQSJ9.eyJkYXQiOnsiYWRQYXRoIjoiL2FwaS9zdHVkZW50L3YxL2NvdXJzZXMiLCJhZFRpbWUiOiIyMDI1LTA4LTEwVDEzOjE1OjQwLjQ2MTk5ODEzNloifX0.O8F0wEfFR8GRYiQNJxurGcP5fU_KVra1pPJ6eqPw2Hl9NKQclZuf6b0_qH7oGeSPahPoZ2t9gcQkQQ4dh0pkBg'}
+        # headers = {"Authorization": "Bearer %s" % 'eyJhbGciOiJFZERTQSJ9.eyJkYXQiOnsiYWRQYXRoIjoiL2FwaS9zdHVkZW50L3YxL2NvdXJzZXMiLCJhZFRpbWUiOiIyMDI1LTA4LTEwVDEzOjE1OjQwLjQ2MTk5ODEzNloifX0.O8F0wEfFR8GRYiQNJxurGcP5fU_KVra1pPJ6eqPw2Hl9NKQclZuf6b0_qH7oGeSPahPoZ2t9gcQkQQ4dh0pkBg'}
         # self.client.get('/api/student/v1/courses', headers=headers)
-        r = self.client.get('/api/student/v1/courses')
+        r = self.client.get(settings.STUDENT_COURSES)
         if r.status_code == 200:
             data = json.loads(r.text)
             length = len(data)
@@ -18,7 +19,7 @@ class UserBehavior(TaskSet):
 
     @task(1)
     def assignments(self):
-        r = self.client.get('/api/student/v1/assignments')
+        r = self.client.get(settings.STUDENT_ASSIGNMENTS)
         if r.status_code == 200:
             data = json.loads(r.text)
             length = len(data)
@@ -28,11 +29,11 @@ class UserBehavior(TaskSet):
 
     @task(1)
     def submissions(self):
-        r = self.client.get('/api/student/v1/submissions')
+        r = self.client.get(settings.STUDENT_SUBMISSIONS)
 
     @task(1)
     def proofs(self):
-        self.client.get('/api/student/v1/proofs')
+        self.client.get(settings.STUDENT_PROOFS)
 
 
 class WebsiteUser(HttpLocust):

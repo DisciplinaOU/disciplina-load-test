@@ -5,7 +5,7 @@ from random import randint
 
 
 def get_student_courses():
-    r = requests.get(settings.STUDENT_COURSES)
+    r = requests.get(settings.STUDENT_BASE_URL + settings.STUDENT_COURSES)
     if r.status_code == 200:
         courses = json.loads(r.text)
         length = len(courses)
@@ -20,7 +20,7 @@ def get_student_courses():
 
 
 def get_student_assignments():
-    r = requests.get(settings.STUDENT_COURSES)
+    r = requests.get(settings.STUDENT_BASE_URL + settings.STUDENT_COURSES)
     if r.status_code == 200:
         assignments = json.loads(r.text)
         length = len(assignments)
@@ -34,7 +34,7 @@ def get_student_assignments():
     
 
 def get_proofs():
-    r = requests.get(settings.STUDENT_PROOFS)
+    r = requests.get(settings.STUDENT_BASE_URL + settings.STUDENT_PROOFS)
     if r.status_code == 200:
         proofs = json.loads(r.text)
         # Placeholder for future testing.
@@ -43,7 +43,7 @@ def get_proofs():
 
 
 def get_submissions():
-    r = requests.get(settings.STUDENT_SUBMISSIONS)
+    r = requests.get(settings.STUDENT_BASE_URL + settings.STUDENT_SUBMISSIONS)
     if r.status_code == 200:
         submissions = json.loads(r.text)
         # Placeholder for future testing.
@@ -51,7 +51,4 @@ def get_submissions():
         raise Warning('Failed to acquire submissions')
 
 
-def main():
-    get_student_courses()
-    get_student_assignments()
 

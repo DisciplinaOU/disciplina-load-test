@@ -26,10 +26,10 @@ class UserBehavior(TaskSet):
 
     @task(1)  # 3 indicates weight when randomizing the task for spawned user
     def create_account(self):
-        r = self.client.post(settings.FAUCET_CREATE_WALLET_URL, json={})
+        r = self.client.post(settings.FAUCET_BASE_URL + settings.FAUCET_CREATE_WALLET_URL, json={})
         if r.status_code == 200:
             data = json.loads(r.text)
-            self.client.post(settings.FAUCET_TRANSFER_URL, json={"destination": data['address']})
+            self.client.post(settings.FAUCET_BASE_URL + settings.FAUCET_TRANSFER_URL, json={"destination": data['address']})
 
 
 class WebsiteUser(HttpLocust):
