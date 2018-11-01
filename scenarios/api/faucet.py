@@ -24,7 +24,7 @@ def create_account():
         data = json.loads(r.text)
         return Account(data['secretKey'], data['publicKey'], data['address'])
     else:
-        raise Warning('While creating account we got non 200 code')
+        raise Warning('POST ' + settings.FAUCET_CREATE_WALLET_URL + ' returned non 200 code')
 
 
 def fill_account(account):
@@ -33,7 +33,7 @@ def fill_account(account):
     if r.status_code == 200:
         account.theoretical_balance = 20
     else:
-        raise Warning('While filling account with money we got non 200 code')
+        raise Warning('POST ' + settings.FAUCET_TRANSFER_URL + ' with body ' + str(payload) + ' returned non 200 code')
 
 
 def write_accounts_to_file(accounts):

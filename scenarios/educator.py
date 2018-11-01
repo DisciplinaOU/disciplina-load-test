@@ -8,13 +8,18 @@ def courses_cycle():
     test_course = {"desc": "TestCourse", "subjects": [0]}
     # TODO figure out the way of modifying the architecture
     # so it can handle scenarios like 'faulty input -> expected error code'
-    id = educator.post_course(test_course)
+    int_course_id = educator.post_course(test_course)
 
     # ---- ensuring that new course is actually in the list
-    courses = educator.get_courses_list()
-    filtered = list(filter(lambda course: course['id'] == id, courses))
+    list_courses = educator.get_courses()
+    filtered = list(filter(lambda course: course['id'] == int_course_id, list_courses))
     if len(filtered) != 1 or filtered[0]['desc'] != "TestCourse":
         raise Warning('Fail - course create/check cycle')
+
+    # ---- pulling exact course by course_id
+    dict_course = educator.get_courses(int_course_id)
+    if dict_course['desc'] != 'TestCourse':
+        raise Warning('Fail - course create/check cycle - unexpected course description')
 
     # ---- deleting the created course
     # TODO: for now there is no endpoint for course deletion. Discuss it with devs.
@@ -40,14 +45,19 @@ def student_cycle():
 
     # FIXME: deleting isn't implemented in endpoints. Documents are way in the future
     # ---- deleting the address
-    #educator.delete_student(address)
+    educator.delete_student(address)
 
     # ---- ensuring its deleted
-    #students = educator.get_students_list()
-    #filtered = list(filter(lambda student: student['addr'] == address, students))
-    #if len(filtered) != 0:
-    #    raise Warning('Fail - student create/check/delete cycle')
+    # students = educator.get_students_list()
+    # filtered = list(filter(lambda student: student['addr'] == address, students))
+    # if len(filtered) != 0:
+    #     raise Warning('Fail - student create/check/delete cycle')
     print('OK - student create/check/delete cycle')
+
+
+# TODO rename me
+def assignments_cycle():
+    assignments = educator.get_assignments_list()
 
 
 def main():

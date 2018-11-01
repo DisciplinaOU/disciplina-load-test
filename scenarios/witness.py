@@ -8,7 +8,7 @@ def create_fill_account():
     faucet.fill_account(account)
     account_info = explorer.get_account_info(account.get_address())
     if account_info['balances']['total'] == 20:
-        print('OK - Account creation and filling')
+        print('OK - create/fill/check cycle')
     else:
         print('Fail - account create/fill/check cycle')
 

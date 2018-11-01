@@ -10,7 +10,7 @@ def get_students_list():
         data = json.loads(r.text)
         return data
     else:
-        raise Warning('While getting students list we got non 200 code')
+        raise Warning('GET ' + settings.EDUCATOR_STUDENTS_LIST + ' returned non 200 code')
 
 
 def post_student(studentObj):
@@ -29,15 +29,25 @@ def delete_student(studentAddr):
     r = requests.delete(settings.EDUCATOR_BASE_URL + settings.EDUCATOR_STUDENTS_LIST + '/' + studentAddr)
     if r.status_code == 200:
         return True
+    elif r.status_code == 500:
+        print('DELETE /students/{student} returned 500. Probably not implemented yet')
 
 
-def get_courses_list():
-    r = requests.get(settings.EDUCATOR_BASE_URL + settings.EDUCATOR_COURSES_LIST)
+# Assigns a new assignment to a student
+def assign_assignment_to_student(student):
+    url = settings.EDUCATOR_BASE_URL
+
+
+def get_courses(course_id=None):
+    url = settings.EDUCATOR_BASE_URL + settings.EDUCATOR_COURSES_LIST
+    if course_id is not None:
+        url += '/' + str(course_id)
+    r = requests.get(url)
     if r.status_code == 200:
         data = json.loads(r.text)
         return data
     else:
-        raise Warning('While getting courses list we got non 200 code')
+        raise Warning('GET ' + settings.EDUCATOR_COURSES_LIST + ' returned non 200 code')
 
 
 def post_course(courseObj):
@@ -49,7 +59,7 @@ def post_course(courseObj):
     elif r.status_code == 400:
         print(r)
     else:
-        raise Warning('POST /courses unhandled error code')
+        raise Warning('POST ' + settings.EDUCATOR_COURSES_LIST + ' unhandled error code')
 
 
 def get_submissions_list():
@@ -64,19 +74,22 @@ def get_submissions_list():
 def get_grades_list():
     r = requests.get(settings.EDUCATOR_BASE_URL + settings.EDUCATOR_GRADES_LIST)
     if r.status_code == 200:
-        print('list successful')
-        # TODO: format data.
+        data = json.loads(r.text)
+        return data
     else:
-        raise Warning('While getting grades we got non 200 code')
+        raise Warning('GET ' + settings.EDUCATOR_GRADES_LIST + ' returned non 200 code')
 
 
-def get_assignments_list():
-    r = requests.get(settings.EDUCATOR_BASE_URL + settings.EDUCATOR_ASSIGNMENTS_LIST)
+def get_assignments_list(student=None):
+    url = settings.EDUCATOR_BASE_URL + settings.EDUCATOR_ASSIGNMENTS_LIST
+    if student is not None and isinstance(student, str):
+        url += '&student=' + student
+    r = requests.get(url)
     if r.status_code == 200:
-        print('list successful')
-        # TODO: format data.
+        data = json.loads(r.text)
+        return data
     else:
-        raise Warning('While getting assignments we got non 200 code')
+        raise Warning('GET' + settings.EDUCATOR_ASSIGNMENTS_LIST + ' returned non 200')
 
 
 def get_proofs_list():
