@@ -13,8 +13,8 @@ def get_students_list():
         raise Warning('GET ' + settings.EDUCATOR_STUDENTS_LIST + ' returned non 200 code')
 
 
-def post_student(studentObj):
-    r = requests.post(settings.EDUCATOR_BASE_URL + settings.EDUCATOR_STUDENTS_LIST, json=studentObj)
+def post_add_student(student_obj):
+    r = requests.post(settings.EDUCATOR_BASE_URL + settings.EDUCATOR_STUDENTS_LIST, json=student_obj)
     if r.status_code == 201:
         # properly created course
         data = json.loads(r.text)
@@ -23,6 +23,18 @@ def post_student(studentObj):
         print(r)
     else:
         raise Warning('POST /students unhandled error code')
+
+
+def post_enroll_student_in_course(student_addr, course_id):
+    payload = {"courseId": course_id}
+    url = settings.EDUCATOR_BASE_URL + settings.EDUCATOR_STUDENTS_LIST
+    url += '/' + student_addr + '/courses'
+    r = requests.post(url, json=payload)
+    if r.status_code == 201:
+        # properly enrolled student into given course
+        return 0
+    else:
+        raise Warning(str('POST ' + settings.EDUCATOR_STUDENTS_LIST + '/' + student_addr + '/courses unhandled error code'))
 
 
 def delete_student(studentAddr):
@@ -38,7 +50,7 @@ def assign_assignment_to_student(student):
     url = settings.EDUCATOR_BASE_URL
 
 
-def get_courses(course_id=None):
+def get_courses_list(course_id=None):
     url = settings.EDUCATOR_BASE_URL + settings.EDUCATOR_COURSES_LIST
     if course_id is not None:
         url += '/' + str(course_id)
@@ -50,7 +62,7 @@ def get_courses(course_id=None):
         raise Warning('GET ' + settings.EDUCATOR_COURSES_LIST + ' returned non 200 code')
 
 
-def post_course(courseObj):
+def post_create_course(courseObj):
     r = requests.post(settings.EDUCATOR_BASE_URL + settings.EDUCATOR_COURSES_LIST, json=courseObj)
     if r.status_code == 201:
         # properly created course
@@ -80,16 +92,29 @@ def get_grades_list():
         raise Warning('GET ' + settings.EDUCATOR_GRADES_LIST + ' returned non 200 code')
 
 
-def get_assignments_list(student=None):
-    url = settings.EDUCATOR_BASE_URL + settings.EDUCATOR_ASSIGNMENTS_LIST
-    if student is not None and isinstance(student, str):
-        url += '&student=' + student
+def get_assignments_list(**kwargs):
+    url = settings.EDUCATOR_BASE_URL + settings.EDUCATOR_ASSIGNMENTS
+    if len(kwargs) > 0:
+        url += '?'
+        for key, value in kwargs.items():
+            url += str(key) + '=' + str(value) + '&'
+        url = url[:-1]
     r = requests.get(url)
     if r.status_code == 200:
         data = json.loads(r.text)
         return data
     else:
-        raise Warning('GET' + settings.EDUCATOR_ASSIGNMENTS_LIST + ' returned non 200')
+        raise Warning('GET ' + settings.EDUCATOR_ASSIGNMENTS + ' returned non 200')
+
+
+def post_create_assignment(assignment_obj):
+    url = settings.EDUCATOR_BASE_URL + settings.EDUCATOR_ASSIGNMENTS
+    url += '?autoAssign=false'
+    r = requests.post(url, json=assignment_obj)
+    if r.status_code == 201:
+        return True
+    else:
+        raise Warning('POST ' + settings.EDUCATOR_ASSIGNMENTS + ' returned unhandled code (non 201)')
 
 
 def get_proofs_list():
